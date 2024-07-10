@@ -41,8 +41,19 @@ class UsuarioFamiliarController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        $userId = Auth::id();
+
+        // Verificar si ya existe una persona embarazada para el usuario
+        $embarazadaExiste = UsuarioFamiliar::where('usuarioP_id', $userId)
+                                           ->where('semanas_embarazo', '>', 0)
+                                           ->exists();
+
+        if ($embarazadaExiste && $request->semanas_embarazo > 0) {
+            Log::error('Ya existe una persona embarazada asociada con el usuario con ID: ' . $userId);
+            return response()->json(['error' => 'Ya existe una persona embarazada asociada con este usuario.'], 422);
+        }
+
         try {
-            $userId = Auth::id();
             Log::info('Añadiendo familiar para el usuario con ID: ' . $userId);
             $data = $request->all();
             $data['usuarioP_id'] = $userId;
@@ -73,8 +84,20 @@ class UsuarioFamiliarController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        $userId = Auth::id();
+
+        // Verificar si ya existe una persona embarazada para el usuario
+        $embarazadaExiste = UsuarioFamiliar::where('usuarioP_id', $userId)
+                                           ->where('semanas_embarazo', '>', 0)
+                                           ->where('id', '!=', $id)
+                                           ->exists();
+
+        if ($embarazadaExiste && $request->semanas_embarazo > 0) {
+            Log::error('Ya existe una persona embarazada asociada con el usuario con ID: ' . $userId);
+            return response()->json(['error' => 'Ya existe una persona embarazada asociada con este usuario.'], 422);
+        }
+
         try {
-            $userId = Auth::id();
             Log::info('Actualizando familiar para el usuario con ID: ' . $userId);
             $familiar = UsuarioFamiliar::where('usuarioP_id', $userId)->findOrFail($id);
 
