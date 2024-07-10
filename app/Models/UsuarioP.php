@@ -50,4 +50,12 @@ class UsuarioP extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relación con UsuarioFamiliar
+     */
+    public function familiares()
+    {
+        return $this->hasMany(UsuarioFamiliar::class, 'usuarioP_id');
+    }
 }

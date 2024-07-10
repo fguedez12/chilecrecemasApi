@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UsuarioP;
 use App\Models\UsuarioFamiliar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,13 @@ class UsuarioFamiliarController extends Controller
             return response()->json(['error' => 'Error al obtener familiares'], 500);
         }
     }
+
+    public function getAllUsersWithFamilies()
+    {
+        $usuarios = UsuarioP::with('familiares')->get();
+        return view('admin.usuariosApp.users-with-families', compact('usuarios'));
+    }
+
 
     public function store(Request $request)
     {

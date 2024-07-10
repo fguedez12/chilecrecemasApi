@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SSOController;
+use App\Http\Controllers\UsuarioFamiliarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// Ruta para acceder a los usuarios registrados desde la App movil y a su grupo familiar
+Route::get('/admin/users-with-families', [UsuarioFamiliarController::class, 'getAllUsersWithFamilies'])
+    ->name('admin.users_with_families');
