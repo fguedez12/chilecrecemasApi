@@ -6,6 +6,7 @@ use App\Http\Controllers\UsuarioPAuthController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ComunaController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\UsuarioFamiliarController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -22,3 +23,11 @@ Route::get('login/google', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('login/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 Route::get('login/facebook', [SocialAuthController::class, 'redirectToFacebook']);
 Route::get('login/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
+
+/*rutas para usuario familiar crud*/
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('familiars', [UsuarioFamiliarController::class, 'index']);
+    Route::post('familiars', [UsuarioFamiliarController::class, 'store']);
+    Route::put('familiars/{id}', [UsuarioFamiliarController::class, 'update']);
+    Route::delete('familiars/{id}', [UsuarioFamiliarController::class, 'destroy']);
+});
